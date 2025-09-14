@@ -1,58 +1,208 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import MainLayout from '@/components/layout/main-layout';
-import {
-  Filter,
-  Plus,
-  Search as SearchIcon,
-} from 'lucide-react';
-import PatientsTable from '@/components/patients/patients-table';
+import MainLayout from '@/components/layout/main-layout'
+import { Users, Filter, Plus } from 'lucide-react'
 
-export default function PatientsPage() {
-  const [searchQuery, setSearchQuery] = useState('');
+const PatientsPage = () => {
+  const patients = [
+    {
+      id: 1,
+      name: 'Damola Doe',
+      avatar: 'DD',
+      gender: 'Male',
+      age: 31,
+      phone: '07067855350',
+      email: 'damolauw@gmail.com',
+      occupation: 'Consultant',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Refractive errors'
+    },
+    {
+      id: 2,
+      name: 'David Ryms',
+      avatar: 'DR',
+      gender: 'Male',
+      age: 26,
+      phone: '08054782876',
+      email: 'davidryms@gmail.com',
+      occupation: 'Civil Engineer',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Eye checkup'
+    },
+    {
+      id: 3,
+      name: 'Simon Bank',
+      avatar: 'SB',
+      gender: 'Male',
+      age: 18,
+      phone: '08163728638',
+      email: 'simonbank@gmail.com',
+      occupation: 'Lecturer',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Refractive errors'
+    },
+    {
+      id: 4,
+      name: 'Carlos Tez',
+      avatar: 'CT',
+      gender: 'Male',
+      age: 54,
+      phone: '08076357897',
+      email: 'carlostez@gmail.com',
+      occupation: 'Auditor',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Cataracts'
+    },
+    {
+      id: 5,
+      name: 'Lillian Voss',
+      avatar: 'LV',
+      gender: 'Female',
+      age: 45,
+      phone: '09152676367',
+      email: 'lillianvoss@gmail.com',
+      occupation: 'Driver',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Refractive errors'
+    },
+    {
+      id: 6,
+      name: 'Elias Mercer',
+      avatar: 'EM',
+      gender: 'Male',
+      age: 31,
+      phone: '07067855350',
+      email: 'eliasmercer@gmail.com',
+      occupation: 'Surgeon',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Myopia'
+    },
+    {
+      id: 7,
+      name: 'Rowan Ellis',
+      avatar: 'RE',
+      gender: 'Male',
+      age: 30,
+      phone: '07062836389',
+      email: 'rowanellis@gmail.com',
+      occupation: 'Consultant',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Refractive errors'
+    },
+    {
+      id: 8,
+      name: 'Emery Tate',
+      avatar: 'ET',
+      gender: 'Male',
+      age: 35,
+      phone: '07067855350',
+      email: 'emerytate@gmail.com',
+      occupation: 'Managing Director',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Glaucoma'
+    },
+    {
+      id: 9,
+      name: 'Quinn Lennox',
+      avatar: 'QL',
+      gender: 'Female',
+      age: 54,
+      phone: '08145725337',
+      email: 'quinnlennox@gmail.com',
+      occupation: 'Consultant',
+      address: '3, Lane 5, Adeniji avenue, PH',
+      lastTreatment: 'Cataracts'
+    }
+  ]
+
+  const getAvatarColor = (index: number) => {
+    const colors = [
+      'bg-orange-500',
+      'bg-yellow-500',
+      'bg-blue-500',
+      'bg-red-500',
+      'bg-purple-500',
+      'bg-green-500',
+      'bg-pink-500',
+      'bg-gray-800',
+      'bg-indigo-500'
+    ]
+    return colors[index % colors.length]
+  }
 
   return (
-    <MainLayout>
-      <div className="flex flex-col space-y-6">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Patients</h1>
-          <div className="flex space-x-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search for anything"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-64 pl-10 pr-4 py-2 rounded-md bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <SearchIcon className="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500" />
-            </div>
-            <button className="flex items-center justify-center h-10 w-10 rounded-md border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700">
-              <Filter size={20} />
-            </button>
-            <button className="flex items-center space-x-2 bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-md transition-colors">
-              <Plus size={20} />
-              <span>Add patient</span>
-            </button>
+    <MainLayout title="Patients" icon={<Users />}>
+      <div className="space-y-6">
+        {/* Header with patient count and actions */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Users className="w-6 h-6 text-gray-400 mr-2" />
+            <span className="text-2xl font-bold text-gray-900">54</span>
+            <span className="text-gray-500 ml-2">Total patients</span>
           </div>
-        </div>
 
-        {/* Patient Count */}
-        <div className="flex items-center space-x-2 text-gray-500 dark:text-gray-400">
-          <div className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-100 dark:bg-gray-800">
-            <span className="text-xl">👥</span>
+          <div className="flex items-center space-x-3">
+            <button className="btn btn-secondary">
+              <Filter className="w-4 h-4 mr-1" />
+              Filter
+            </button>
+            <button className="btn btn-primary">
+              <Plus className="w-4 h-4 mr-1" />
+              Add patient
+            </button>
           </div>
-          <span className="text-xl font-medium">54</span>
-          <span className="text-sm">Total patients</span>
         </div>
 
         {/* Patients Table */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-          <PatientsTable searchQuery={searchQuery} />
+        <div className="card">
+          <div className="table-container">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Patient name</th>
+                  <th>Gender</th>
+                  <th>Age</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Occupation</th>
+                  <th>Address</th>
+                  <th>Last treatment</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patients.map((patient, index) => (
+                  <tr key={patient.id}>
+                    <td>
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+                      />
+                    </td>
+                    <td>
+                      <div className="flex items-center">
+                        <div className={`avatar mr-3 ${getAvatarColor(index)}`}>
+                          {patient.avatar}
+                        </div>
+                        <span className="font-medium text-gray-900">{patient.name}</span>
+                      </div>
+                    </td>
+                    <td className="text-gray-600">{patient.gender}</td>
+                    <td className="text-gray-600">{patient.age}</td>
+                    <td className="text-gray-600">{patient.phone}</td>
+                    <td className="text-gray-600">{patient.email}</td>
+                    <td className="text-gray-600">{patient.occupation}</td>
+                    <td className="text-gray-600">{patient.address}</td>
+                    <td className="text-gray-600">{patient.lastTreatment}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </MainLayout>
-  );
+  )
 }
+
+export default PatientsPage

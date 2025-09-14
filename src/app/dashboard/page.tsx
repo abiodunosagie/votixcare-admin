@@ -1,255 +1,366 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import MainLayout from '@/components/layout/main-layout';
-import { format } from 'date-fns';
-import {
-  ChevronDown,
-  Plus,
-  TrendingUp,
-  TrendingDown
-} from 'lucide-react';
-import RevenueChart from '@/components/dashboard/revenue-chart';
-import ExpensesPieChart from '@/components/dashboard/expenses-pie-chart';
-import PatientsChart from '@/components/dashboard/patients-chart';
-import StaffList from '@/components/dashboard/staff-list';
-import AppointmentsList from '@/components/dashboard/appointments-list';
+import MainLayout from '@/components/layout/main-layout'
+import { Home, ChevronDown, Plus, TrendingUp } from 'lucide-react'
+import RevenueChart from '@/components/dashboard/revenue-chart'
+import ExpensesPieChart from '@/components/dashboard/expenses-pie-chart'
+import PatientsChart from '@/components/dashboard/patients-chart'
+import IncomeExpensesChart from '@/components/dashboard/income-expenses-chart'
 
-export default function DashboardPage() {
-  const [currentDate] = useState(new Date());
+const DashboardPage = () => {
+  const staffMembers = [
+    { name: 'Jessica Adams', role: 'Dentist', avatar: 'JA' },
+    { name: 'May Simon', role: 'Dental hygienist', avatar: 'MS' },
+    { name: 'Jessica Jessica', role: 'Dental assistant', avatar: 'JJ' },
+    { name: 'Jessica Jessica', role: 'Dental assistant', avatar: 'JJ' },
+    { name: 'Jessica Jessica', role: 'Office manager', avatar: 'JJ' }
+  ]
+
+  const appointments = [
+    { patient: 'David Ryms', treatment: 'Eye checkup', schedule: 'Jan 17, 2025  10:15 AM' },
+    { patient: 'Simon Bank', treatment: 'Refractive error', schedule: 'Jan 22, 2025  02:45 PM' },
+    { patient: 'Carlos Tez', treatment: 'Myopia', schedule: 'Feb 2, 2025   9:00 AM' },
+    { patient: 'Ade Dayo', treatment: 'Cataracts', schedule: 'Feb 12, 2025  10:15 AM' }
+  ]
 
   return (
-    <MainLayout>
-      <div className="flex flex-col space-y-6">
+    <MainLayout title="Dashboard" icon={<Home />}>
+      <div className="space-y-6">
         {/* Header */}
-        <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Good Morning, Dr Jessica</h1>
-          <p className="text-gray-500 dark:text-gray-400">{format(currentDate, 'EEEE, MMMM d, yyyy')}</p>
+        <div className="mb-6">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-1">Good Morning, Dr Jessica</h1>
+          <p className="text-gray-500">Wednesday, January 26, 2025</p>
         </div>
 
-        {/* Revenue Overview Card */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 lg:col-span-2">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Total Revenue Generated</h2>
-              <div className="flex items-center space-x-2">
-                <button className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-md px-3 py-1">
-                  <span>Last 12 months</span>
-                  <ChevronDown size={16} />
-                </button>
-              </div>
-            </div>
-            <div className="space-y-6">
+        {/* Row 1: Total Revenue Generated + Expenses */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Total Revenue Generated */}
+          <div className="card p-6">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <div className="flex items-center">
-                  <h3 className="text-3xl font-bold text-gray-900 dark:text-white">₦3,846,813</h3>
+                <h2 className="text-lg font-semibold text-gray-900">Total Revenue Generated</h2>
+                <div className="flex items-center mt-2">
+                  <span className="text-3xl font-bold text-gray-900">₦3,846,813</span>
                   <span className="ml-2 px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">+8.2%</span>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">January 1st - December 31st</p>
+                <p className="text-sm text-gray-500 mt-1">January 1st - December 31st</p>
               </div>
+              <button className="flex items-center px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50">
+                Last 12 months
+                <ChevronDown className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+            <div className="chart-container">
               <RevenueChart />
             </div>
           </div>
 
-          {/* Expenses Overview Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Expenses</h2>
-              <div className="flex items-center space-x-2">
-                <button className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-md px-3 py-1">
-                  <span>Last month</span>
-                  <ChevronDown size={16} />
-                </button>
+          {/* Expenses */}
+          <div className="card p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Expenses</h2>
+              <button className="flex items-center px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50">
+                Last month
+                <ChevronDown className="w-4 h-4 ml-1" />
+              </button>
+            </div>
+
+            <div className="relative mb-6">
+              <ExpensesPieChart />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-gray-900">₦3,846,813</div>
+                </div>
               </div>
             </div>
-            <div className="flex justify-center mb-6">
-              <ExpensesPieChart />
-            </div>
-            <div className="space-y-4">
-              {[
-                { name: 'Salary', percentage: '37%', amount: '₦450,000', trend: 'up' },
-                { name: 'Rental cost', percentage: '20%', amount: '₦300,000', trend: 'up' },
-                { name: 'Supplies', percentage: '20%', amount: '₦160,000', trend: 'down' },
-                { name: 'Medical equip.', percentage: '10%', amount: '₦100,000', trend: 'up' },
-              ].map((expense, index) => (
-                <div key={index} className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-3 h-3 rounded-full ${
-                      index === 0 ? 'bg-yellow-400' :
-                      index === 1 ? 'bg-blue-400' :
-                      index === 2 ? 'bg-yellow-500' :
-                      'bg-pink-400'
-                    }`}></div>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200">{expense.name}</span>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className={`text-xs font-semibold ${
-                      index === 0 ? 'text-yellow-600 dark:text-yellow-400' :
-                      index === 1 ? 'text-blue-600 dark:text-blue-400' :
-                      index === 2 ? 'text-yellow-600 dark:text-yellow-500' :
-                      'text-pink-600 dark:text-pink-400'
-                    }`}>
-                      {expense.percentage}
-                    </span>
-                    <div className="text-right">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">{expense.amount}</p>
-                      <div className="flex items-center text-xs">
-                        {expense.trend === 'up' ? (
-                          <TrendingUp size={12} className="text-green-500 mr-1" />
-                        ) : (
-                          <TrendingDown size={12} className="text-red-500 mr-1" />
-                        )}
-                        <span className={expense.trend === 'up' ? 'text-green-500' : 'text-red-500'}>
-                          {expense.trend === 'up' ? '+4.3%' : '-2.5%'}
-                        </span>
-                      </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-yellow-400 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-700">Salary</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-medium text-gray-900">37%</div>
+                  <div className="text-xs text-gray-500">₦450,000</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-700">Rental cost</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-medium text-gray-900">20%</div>
+                  <div className="text-xs text-gray-500">₦300,000</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-700">Supplies</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-medium text-gray-900">20%</div>
+                  <div className="text-xs text-gray-500">₦160,000</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-pink-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-700">Medical equip.</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-medium text-gray-900">10%</div>
+                  <div className="text-xs text-gray-500">₦100,000</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-orange-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-700">Others</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-medium text-gray-900">8%</div>
+                  <div className="text-xs text-gray-500">₦80,000</div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-3 h-3 bg-teal-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-700">Repairs</span>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-medium text-gray-900">5%</div>
+                  <div className="text-xs text-gray-500">₦50,000</div>
+                </div>
+              </div>
+
+              {/* Top expenses section */}
+              <div className="border-t border-gray-100 pt-4 mt-4">
+                <h3 className="text-sm font-medium text-gray-900 mb-3">Top expenses</h3>
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      <span className="text-gray-600">Salary</span>
                     </div>
+                    <span className="font-medium">₦450,000</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      <span className="text-gray-600">Rental cost</span>
+                    </div>
+                    <span className="font-medium">₦300,000</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      <span className="text-gray-600">Supplies</span>
+                    </div>
+                    <span className="font-medium">₦160,000</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      <span className="text-gray-600">Medical equip.</span>
+                    </div>
+                    <span className="font-medium">₦100,000</span>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Income and Expenses */}
+        {/* Row 2: Income and expenses + Patients + Active staff */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 lg:col-span-1">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Income and expenses</h2>
-              <div className="flex items-center space-x-2">
-                <button className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-md px-3 py-1">
-                  <span>This month</span>
-                  <ChevronDown size={16} />
-                </button>
-              </div>
+          {/* Income and expenses */}
+          <div className="card p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Income and expenses</h2>
+              <button className="flex items-center px-3 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50">
+                This month
+                <ChevronDown className="w-4 h-4 ml-1" />
+              </button>
             </div>
+
             <div className="space-y-4 mb-6">
               <div>
-                <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full bg-primary mr-2"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">Total income</span>
+                <div className="flex items-center mb-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-600">Total income</span>
                 </div>
-                <div className="flex items-center mt-2">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">₦3,846,813</h3>
+                <div className="flex items-center">
+                  <span className="text-xl font-bold text-gray-900">₦3,846,813</span>
                   <span className="ml-2 px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">+8.2%</span>
                 </div>
               </div>
               <div>
-                <div className="flex items-center">
-                  <div className="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">Total expenses</span>
+                <div className="flex items-center mb-2">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-600">Total expenses</span>
                 </div>
-                <div className="flex items-center mt-2">
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">₦1,846,813</h3>
+                <div className="flex items-center">
+                  <span className="text-xl font-bold text-gray-900">₦1,846,813</span>
                   <span className="ml-2 px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded">-2.4%</span>
                 </div>
               </div>
             </div>
-            <div className="h-64">
-              {/* Weekly income/expense bar chart would go here */}
-              <div className="h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-                <p>Weekly comparison chart</p>
-              </div>
+
+            <div className="chart-container">
+              <IncomeExpensesChart />
             </div>
           </div>
 
-          {/* Patients Overview */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Patients</h2>
-              <button className="flex items-center space-x-1 text-sm text-white bg-primary rounded-md px-3 py-1.5 hover:bg-primary-dark transition-colors">
-                <Plus size={16} />
-                <span>Add Patient</span>
+          {/* Patients */}
+          <div className="card p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Patients</h2>
+              <button className="btn btn-primary">
+                <Plus className="w-4 h-4 mr-1" />
+                Add Patient
               </button>
             </div>
-            <div className="flex justify-center mb-6">
+
+            <div className="relative mb-6">
               <PatientsChart />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-gray-900">355</div>
+                  <div className="text-sm text-gray-500">Patients</div>
+                </div>
+              </div>
             </div>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">Men</span>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-600">Men</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">35%</span>
+                <span className="text-sm font-medium text-gray-900">130</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div className="bg-blue-500 h-2 rounded-full" style={{ width: '35%' }}></div>
+              <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: '37%' }}></div>
               </div>
 
-              <div className="flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-pink-500"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">Women</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-pink-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-600">Women</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">40%</span>
+                <span className="text-sm font-medium text-gray-900">170</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div className="bg-pink-500 h-2 rounded-full" style={{ width: '40%' }}></div>
+              <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="bg-pink-500 h-1.5 rounded-full" style={{ width: '48%' }}></div>
               </div>
 
-              <div className="flex justify-between items-center">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">Children</span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-600">Children</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">25%</span>
+                <span className="text-sm font-medium text-gray-900">50</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div className="bg-purple-500 h-2 rounded-full" style={{ width: '25%' }}></div>
+              <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: '14%' }}></div>
+              </div>
+            </div>
+
+            {/* Additional progress bars section matching screenshot */}
+            <div className="mt-6 space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-teal-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-600">Returning patients</span>
+                </div>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="bg-teal-500 h-1.5 rounded-full" style={{ width: '75%' }}></div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                    <span className="text-sm text-gray-600 dark:text-gray-300">Returning patients</span>
-                  </div>
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">65%</span>
-                </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-2">
-                  <div className="bg-green-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                  <span className="text-sm text-gray-600">New patients</span>
                 </div>
               </div>
-
-              <div className="flex justify-between items-center mt-2">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-                  <span className="text-sm text-gray-600 dark:text-gray-300">New patients</span>
-                </div>
-                <span className="text-sm font-medium text-gray-900 dark:text-white">35%</span>
-              </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                <div className="bg-blue-400 h-2 rounded-full" style={{ width: '35%' }}></div>
+              <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="bg-green-500 h-1.5 rounded-full" style={{ width: '25%' }}></div>
               </div>
             </div>
           </div>
 
-          {/* Active Staff */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Active staff</h2>
-              <button className="flex items-center space-x-1 text-sm text-white bg-primary rounded-md px-3 py-1.5 hover:bg-primary-dark transition-colors">
-                <Plus size={16} />
-                <span>Add staff</span>
+          {/* Active staff */}
+          <div className="card p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Active staff</h2>
+              <button className="btn btn-primary">
+                <Plus className="w-4 h-4 mr-1" />
+                Add staff
               </button>
             </div>
-            <StaffList />
+
+            <div className="space-y-4">
+              {staffMembers.map((member, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div className="w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center text-white text-xs font-medium mr-3">
+                      {member.avatar}
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium text-gray-900">{member.name}</div>
+                      <div className="text-xs text-gray-500">{member.role}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="pt-2">
+                <button className="text-green-600 text-sm font-medium flex items-center">
+                  See more
+                  <TrendingUp className="w-4 h-4 ml-1" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Upcoming Appointments */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Upcoming appointments</h2>
-            <button className="flex items-center space-x-1 text-sm text-white bg-primary rounded-md px-3 py-1.5 hover:bg-primary-dark transition-colors">
-              <Plus size={16} />
-              <span>Add appointment</span>
+        {/* Row 3: Upcoming appointments (full width) */}
+        <div className="card p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-semibold text-gray-900">Upcoming appointments</h2>
+            <button className="btn btn-primary">
+              <Plus className="w-4 h-4 mr-1" />
+              Add appointment
             </button>
           </div>
-          <AppointmentsList />
+
+          <div className="overflow-x-auto">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Patient name</th>
+                  <th>Treatment</th>
+                  <th>Schedule</th>
+                </tr>
+              </thead>
+              <tbody>
+                {appointments.map((appointment, index) => (
+                  <tr key={index}>
+                    <td className="font-medium text-gray-900">{appointment.patient}</td>
+                    <td className="text-gray-600">{appointment.treatment}</td>
+                    <td className="text-gray-600">{appointment.schedule}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </MainLayout>
-  );
+  )
 }
+
+export default DashboardPage

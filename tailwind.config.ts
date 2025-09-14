@@ -1,5 +1,4 @@
 import type { Config } from 'tailwindcss'
-import { fontFamily } from "tailwindcss/defaultTheme"
 
 const config: Config = {
   darkMode: ["class"],
@@ -18,8 +17,18 @@ const config: Config = {
     },
     extend: {
       colors: {
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))"
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))"
+        },
         primary: {
-          DEFAULT: "#4EAC68", // VotixCare main green
+          DEFAULT: "#4EAC68",
           light: "#7FDDA3",
           dark: "#2A7F46",
           50: '#f0fdf4',
@@ -32,30 +41,46 @@ const config: Config = {
           700: '#15803d',
           800: '#166534',
           900: '#14532d',
+          foreground: "hsl(var(--primary-foreground))"
         },
         secondary: {
-          DEFAULT: "#4E8EF7", // Secondary blue
+          DEFAULT: "#4E8EF7",
           light: "#7CAFFC",
           dark: "#2661D4",
+          foreground: "hsl(var(--secondary-foreground))"
         },
-        success: {
-          DEFAULT: "#22C55E",
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))"
         },
-        warning: {
-          DEFAULT: "#FACC15",
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))"
         },
         destructive: {
-          DEFAULT: "#EF4444",
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))"
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))"
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))"
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
       },
       borderRadius: {
-        lg: "0.5rem",
-        md: "0.375rem",
-        sm: "0.25rem",
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", ...fontFamily.sans],
-        heading: ["var(--font-inter)", ...fontFamily.sans],
+        sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["var(--font-heading)", "ui-sans-serif", "system-ui", "sans-serif"],
       },
     },
   },
